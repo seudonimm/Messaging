@@ -18,26 +18,20 @@ const Chat = () => {
 
     const user = useRef(null);
 
-    const flatlistItemRender = (username, message, timeStamp, item) => {
-        console.log("flatlist: "+ username, message, timeStamp)
-            return(
-                <SafeAreaView>
-                    <Text>sdflksjdlfk</Text>
-                    <Text>{message}</Text>
-                    <Text>{timeStamp}</Text>
-                </SafeAreaView>
-            );
-        // return  timeStamp?(
-                // return<FlatlistMessageBox style={{height:20, width:90}}
-                //     username={username}
-                //     message={message}
-                //     timeStamp={timeStamp.toDate().toString()}
-               //s />//):(<ActivityIndicator/>
-        //);
+    const flatlistItemRender = ({item}) => {
+        console.log("flatlist: "+ item.email, item.message)
+
+        return  (item.timeStamp?
+                <FlatlistMessageBox style={styles.messageBox}
+                    username={item.email}
+                    message={item.message}
+                    timeStamp={item.timeStamp.toDate().toString()}
+                />:(<ActivityIndicator/>)
+        );
     };
 
     const sendMessage = (message) => {
-        FirestoreHelper.addToCollection(user.current.email, message);
+        //FirestoreHelper.addToCollection(user.current.email, message);
     };
 
     useEffect(
@@ -50,7 +44,7 @@ const Chat = () => {
             //console.log(subscriber);
             if(chat && loading){
                 setMessages(chat.data);
-                //console.log("chatt: " +JSON.stringify(messages));
+                console.log("chatt: " +JSON.stringify(chat.data));
                 setLoading(false);
                 //console.log("message length:" +messages.length)
             }
@@ -66,7 +60,7 @@ const Chat = () => {
             //console.log("user:" + user.current.email)
             console.log('useEffect2')
 
-            return chat.unsubscribe;
+            //return chat.unsubscribe;
         }, []
     )
     return(
@@ -76,8 +70,8 @@ const Chat = () => {
                 <FlatList
                     initialNumToRender={30}
                     data={chat.data}
-                    renderItem={({item, index}) => {flatlistItemRender(item.email, item.message, item.timeStamp, item)}}
-                    keyExtractor={({item, index})=>index}
+                    renderItem={flatlistItemRender}
+                    keyExtractor={(item)=>item.id}
                 />
                 <ScrollView>
                     {/* {chat.data.map(

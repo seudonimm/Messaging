@@ -17,7 +17,7 @@ class FirestoreHelper{
         return firestore().collection('messages').orderBy("timeStamp", "asc").onSnapshot(docSnapshot=>{
             let messages = [];
             docSnapshot.docs.forEach(element => {
-                messages.push(element.data());
+                messages.push({...element.data(), id:doc.id});
                 //console.log("elements: "+ JSON.stringify(element.data()))
                 //console.log(messages.length)
             });

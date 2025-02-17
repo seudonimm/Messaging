@@ -46,7 +46,7 @@ function getData(){
         const unsubscribe = onSnapshot(q, docSnapshot=>{
             let messages = []
             docSnapshot.docs.forEach(element => {
-                messages.push(element.data());
+                messages.push({...element.data(), id:element.id});
 
             });
             emitter(messages);
@@ -61,6 +61,7 @@ function* getDataSaga(){
         console.log("trying");
         while(true){
             let data = yield take(chan);
+            console.log("data:" +data)
             yield put(getMessagesSuccess(data));
         }
     } catch (e) {
