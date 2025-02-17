@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
     },
     messageBox: {
         flex: 1,
-        // height: 50,
-        // width: '70%',
+        //height: 50,
+        width: '70%',
         borderWidth: 1,
         color: 'black',
         borderColor: RED,

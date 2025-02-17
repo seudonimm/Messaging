@@ -1,18 +1,22 @@
 import React, { useEffect, useState, useRef } from "react";
-import { FlatList, SafeAreaView, Text, View, StyleSheet, ActivityIndicator } from "react-native";
+import { FlatList, SafeAreaView, Text, View, StyleSheet, ActivityIndicator, ScrollView } from "react-native";
 import FirestoreHelper from "../firebase/firestore/FirestoreHelper";
 import FlatlistMessageBox from "../components/FlatlistMessageBox";
 import { firebase } from "@react-native-firebase/auth";
 import CustomButton from "../components/CustomButton";
 import CustomInputField from "../components/CustomInputField";
+import { useSelector } from "react-redux";
+import store from "../store/Store";
 import { BLACK, RED, WHITE } from "../res/colors";
 import CustomMessageInputField from "../components/CustomMessageInputField";
 
 const Chat = (props) => {
     const {chatRoom} = props.route.params;
 
-    const [messages, setMessages] = useState();
-    const [loading, setLoading] = useState();
+    const chat = useSelector(state => state.chat);
+
+    const [messages, setMessages] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const [currentMessage, setCurrentMessage] = useState();
 
@@ -21,15 +25,15 @@ const Chat = (props) => {
 
     const chatList = useRef()
 
-    const flatlistItemRender = (username, message, timeStamp) => {
-        //console.log(timeStamp.toDate().toString())
-        return(
-                timeStamp?
-                <FlatlistMessageBox style={{...styles.messageBox, alignSelf:(username==user.current.email?'flex-end':'flex-start')}}
-                    username={username}
-                    message={message}
-                    timeStamp={timeStamp.toDate().toString()}
-                />:<ActivityIndicator/>
+    const flatlistItemRender = ({item}) => {
+        console.log("flatlist: "+ item.email, item.message)
+
+        return  (item.timeStamp?
+                <FlatlistMessageBox style={{...styles.messageBox, alignSelf:(item.email==user.current.email?'flex-end':'flex-start')}}
+                    username={item.email}
+                    message={item.message}
+                    timeStamp={item.timeStamp.toDate().toString()}
+                />:(<ActivityIndicator/>)
         );
     };
 
@@ -41,37 +45,60 @@ const Chat = (props) => {
 
     useEffect(
         () => {
-            console.log("chat")
-            const subscriber = FirestoreHelper.getFirestoreDataRealTime(storeMessages =>{
-                //console.log("chat messages:" + storeMessages[1].message);
-                setMessages(storeMessages);
-                //console.log("checkig messages:" + messages[1].email)
-            }, chatRoom)
-            user.current = firebase.auth().currentUser
+            // const subscriber = FirestoreHelper.getFirestoreDataRealTime(storeMessages =>{
+            //     //console.log("chat messages:" + storeMessages[1].message);
+            //     setMessages(storeMessages);
+            //     //console.log("checkig messages:" + messages[1].email)
+            // })
             //console.log(subscriber);
-            return () => subscriber();
+            // if(chat && loading){
+            //     //setMessages(chat.data);
+            //     console.log("chatt: " +JSON.stringify(chat.data));
+            //     setLoading(false);
+            //     //console.log("message length:" +messages.length)
+            // }
+            console.log('useEffect1')
+            user.current = firebase.auth().currentUser;
+            console.log("user:" + user.current.email);
         }, []
     )
     useEffect(
         () => {
+
+            
+            store.dispatch({type: 'GET_REALTIME_DATA'})
+            
             setTimeout(() => {
                 chatList.current.scrollToEnd();
 
             }, 100);
-        }, [messages]
+            console.log('useEffect2')
+
+            //return chat.unsubscribe;
+        }, []
     )
     return(
         <SafeAreaView style={styles.container}>
             <View style={{flex:8}}>
                 <FlatList
+                    initialNumToRender={30}
                     ref={chatList}
-                    data={messages}
-                    renderItem={({item}) => flatlistItemRender(item.email, item.message, item.timeStamp)}
+                    data={chat.data}
+                    renderItem={flatlistItemRender}
+                    keyExtractor={(item)=>item.id}
                 />
+                <ScrollView>
+                    {/* {chat.data.map(
+                        (item, index)=>{
+                            console.log(item.email)
+                            return <Text>{item.email}</Text>
+                        }
+                    )} */}
+                </ScrollView>
             </View>
             <View style={styles.inputContainer}>
                 <CustomMessageInputField
-                    ref={inputBox}
+                    //ref={inputBox}
                     text={"Enter Message"}
                     onChangeText={t => setCurrentMessage(t)}
                     
@@ -98,7 +125,7 @@ const styles = StyleSheet.create({
     },
     messageBox: {
         flex: 1,
-        // height: 50,
+        //height: 50,
         width: '70%',
         borderWidth: 1,
         color: 'black',
