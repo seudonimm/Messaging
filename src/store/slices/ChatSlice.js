@@ -13,12 +13,12 @@ const chatSlice = createSlice({
             state.data = null;
         },
         getMessagesSuccess: (state, action) => {
-            state.data = action.payload[0];
-            state.unsubscriber = action.payload[1];
+            state.data = action.payload;
+            //state.unsubscriber = action.payload[1];
             
             console.log("payload" +action.payload);
 
-            console.log(state);
+            //console.log(state);
         },
         getMessagesFailure: (state, action) => {
             state.data = null

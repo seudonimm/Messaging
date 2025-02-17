@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { FlatList, SafeAreaView, Text, View, StyleSheet, ActivityIndicator } from "react-native";
+import { FlatList, SafeAreaView, Text, View, StyleSheet, ActivityIndicator, ScrollView } from "react-native";
 import FirestoreHelper from "../firebase/firestore/FirestoreHelper";
 import FlatlistMessageBox from "../components/FlatlistMessageBox";
 import { firebase } from "@react-native-firebase/auth";
@@ -20,14 +20,20 @@ const Chat = () => {
 
     const flatlistItemRender = (username, message, timeStamp, item) => {
         console.log("flatlist: "+ username, message, timeStamp)
-
-        return  timeStamp?(
-                <FlatlistMessageBox style={{flex:1}}
-                    username={username}
-                    message={message}
-                    timeStamp={timeStamp.toDate().toString()}
-                />):(<ActivityIndicator/>
-        );
+            return(
+                <SafeAreaView>
+                    <Text>sdflksjdlfk</Text>
+                    <Text>{message}</Text>
+                    <Text>{timeStamp}</Text>
+                </SafeAreaView>
+            );
+        // return  timeStamp?(
+                // return<FlatlistMessageBox style={{height:20, width:90}}
+                //     username={username}
+                //     message={message}
+                //     timeStamp={timeStamp.toDate().toString()}
+               //s />//):(<ActivityIndicator/>
+        //);
     };
 
     const sendMessage = (message) => {
@@ -60,19 +66,27 @@ const Chat = () => {
             //console.log("user:" + user.current.email)
             console.log('useEffect2')
 
-            //return chat.unsubscribe;
+            return chat.unsubscribe;
         }, []
     )
     return(
         <SafeAreaView style={styles.container}>
             <View style={{flex:9, backgroundColor: 'lightblue' }}>
-                {(chat.data)?
+
                 <FlatList
+                    initialNumToRender={30}
                     data={chat.data}
-                    renderItem={({item}) => {flatlistItemRender(item.email, item.message, item.timeStamp, item)}}
+                    renderItem={({item, index}) => {flatlistItemRender(item.email, item.message, item.timeStamp, item)}}
                     keyExtractor={({item, index})=>index}
-                />:<ActivityIndicator/>
-                }
+                />
+                <ScrollView>
+                    {/* {chat.data.map(
+                        (item, index)=>{
+                            console.log(item.email)
+                            return <Text>{item.email}</Text>
+                        }
+                    )} */}
+                </ScrollView>
             </View>
             <View style={styles.container}>
                 <CustomInputField

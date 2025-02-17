@@ -1,6 +1,8 @@
-import { takeLatest, put, call, delay } from "redux-saga/effects";
+import { takeLatest, put, call, delay, cancelled, take } from "redux-saga/effects";
 import FirestoreHelper from "../../firebase/firestore/FirestoreHelper";
 import { getMessagesFailure, getMessagesSuccess } from "../slices/ChatSlice";
+import { eventChannel } from "redux-saga";
+import firestore, { FieldValue, onSnapshot, Timestamp } from '@react-native-firebase/firestore'
 
 function* getRealtimeData(){
     try{
@@ -33,9 +35,42 @@ function* sendMessageToCollection(){
 }
 
 function* ChatSaga () {
-    yield takeLatest('GET_REALTIME_DATA', getRealtimeData);
+    yield takeLatest('GET_REALTIME_DATA', getDataSaga);
     yield takeLatest('SEND_MESSAGE', sendMessageToCollection);
 
+}
+
+function getData(){
+    return eventChannel(emitter => {
+        const q = firestore().collection('messages').orderBy("timeStamp", "asc");
+        const unsubscribe = onSnapshot(q, docSnapshot=>{
+            let messages = []
+            docSnapshot.docs.forEach(element => {
+                messages.push(element.data());
+
+            });
+            emitter(messages);
+        });
+        return unsubscribe;
+    })
+}
+
+function* getDataSaga(){
+    const chan = yield call(getData);
+    try {
+        console.log("trying");
+        while(true){
+            let data = yield take(chan);
+            yield put(getMessagesSuccess(data));
+        }
+    } catch (e) {
+        yield put(getMessagesFailure(e));
+    } finally {
+        let val = yield cancelled();
+        if(val){
+            chan.close()
+        }
+    }
 }
 
 export default ChatSaga;
