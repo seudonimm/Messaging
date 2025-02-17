@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import CustomInputField from "../components/CustomInputField";
-import { SafeAreaView, Text } from "react-native";
+import { SafeAreaView, Text,StyleSheet } from "react-native";
 import CustomButton from "../components/CustomButton";
 import store from "../store/Store";
 import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
+import Header from "../components/Header";
+import Subtext from "../components/Subtext";
+import { BLACK } from "../res/colors";
+import CustomPressable from "../components/CustomPressable";
 
 const CreateAccount = () => {
     const navigation = useNavigation();
@@ -35,13 +39,20 @@ const CreateAccount = () => {
         },[login]
     );
     return(
-        <SafeAreaView style={{flex: 1}}>
-            <Text>Email</Text>
+        <SafeAreaView style={styles.container}>
+            <Header
+                text={"Create Account"}
+            />
+            <Subtext
+                text={"Email"}
+            />
             <CustomInputField
                 text={'Enter Email'}
                 onChangeText={t => setEmail(t)}
             />
-            <Text>Password</Text>
+            <Subtext
+                text={"Password"}
+            />
             <CustomInputField
                 text={'Enter Password'}
                 onChangeText={t => setPassword(t)}
@@ -50,12 +61,19 @@ const CreateAccount = () => {
                 text={"Create Account"}
                 onPress={() => onSubmitPress(email, password)}
             />
-            <CustomButton
-                text={"To Log In"}
+            <CustomPressable
+                text={"Log In"}
                 onPress={() => onToLoginPress()}
             />
         </SafeAreaView>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: BLACK
+    }
+})
 
 export default CreateAccount;

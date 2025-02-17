@@ -1,6 +1,7 @@
 import auth, { firebase } from '@react-native-firebase/auth';
 import { takeLatest, call, put } from 'redux-saga/effects';
 import { createAccountFailure, createAccountSuccess, loginFailed, loginSuccess, logoutFailed, logoutSuccess, passwordResetFailure, passwordResetSuccess } from '../slices/LoginSlice';
+import { Alert } from 'react-native';
 
 function* logInToAccount(action){
     try{
@@ -17,7 +18,7 @@ function* logInToAccount(action){
         if(e.code === 'auth/invalid-email'){
             console.log('That email address is invalid!');
         }
-        console.log(e);
+        Alert.alert(e);
         yield put(loginFailed());
     }
 

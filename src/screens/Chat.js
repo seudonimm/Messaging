@@ -5,14 +5,21 @@ import FlatlistMessageBox from "../components/FlatlistMessageBox";
 import { firebase } from "@react-native-firebase/auth";
 import CustomButton from "../components/CustomButton";
 import CustomInputField from "../components/CustomInputField";
+import { BLACK, RED, WHITE } from "../res/colors";
+import CustomMessageInputField from "../components/CustomMessageInputField";
 
-const Chat = () => {
+const Chat = (props) => {
+    const {chatRoom} = props.route.params;
+
     const [messages, setMessages] = useState();
     const [loading, setLoading] = useState();
 
     const [currentMessage, setCurrentMessage] = useState();
 
     const user = useRef(null);
+    const inputBox = useRef(null);
+
+    const chatList = useRef()
 
     const flatlistItemRender = (username, message, timeStamp) => {
         //console.log(timeStamp.toDate().toString())
@@ -27,7 +34,9 @@ const Chat = () => {
     };
 
     const sendMessage = (message) => {
-        FirestoreHelper.addToCollection(user.current.email, message);
+        FirestoreHelper.addToCollection(user.current.email, message, chatRoom);
+        //inputBox.current.clear();
+        setCurrentMessage("");
     };
 
     useEffect(
@@ -37,32 +46,37 @@ const Chat = () => {
                 //console.log("chat messages:" + storeMessages[1].message);
                 setMessages(storeMessages);
                 //console.log("checkig messages:" + messages[1].email)
-            })
+            }, chatRoom)
+            user.current = firebase.auth().currentUser
             //console.log(subscriber);
             return () => subscriber();
         }, []
     )
     useEffect(
         () => {
-            user.current = firebase.auth().currentUser
-            //console.log("user:" + user.current.email)
-        }, []
+            setTimeout(() => {
+                chatList.current.scrollToEnd();
+
+            }, 100);
+        }, [messages]
     )
     return(
         <SafeAreaView style={styles.container}>
-            <View style={{flex:9}}>
+            <View style={{flex:8}}>
                 <FlatList
+                    ref={chatList}
                     data={messages}
                     renderItem={({item}) => flatlistItemRender(item.email, item.message, item.timeStamp)}
                 />
             </View>
-            <View style={styles.container}>
-                <CustomInputField
+            <View style={styles.inputContainer}>
+                <CustomMessageInputField
+                    ref={inputBox}
                     text={"Enter Message"}
                     onChangeText={t => setCurrentMessage(t)}
                     
                 />
-                <CustomButton
+                <CustomButton style={{flex: 1}}
                     text={"Send"}
                     onPress={() => sendMessage(currentMessage)}
                 />
@@ -74,7 +88,13 @@ const Chat = () => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: BLACK
+    },
+    inputContainer: {
+        flex: 2,
+        backgroundColor: RED,
+        borderTopRadius: 20
     },
     messageBox: {
         flex: 1,
@@ -82,13 +102,13 @@ const styles = StyleSheet.create({
         width: '70%',
         borderWidth: 1,
         color: 'black',
-        borderColor: 'black',
+        borderColor: RED,
         //alignSelf: "flex-start",
         margin: '1%',
         borderRadius: 10,
-        fontSize: 20,
+        fontSize: 30,
         textAlign: 'center',
-        backgroundColor: 'white',
+        backgroundColor: WHITE,
 
     }
 })

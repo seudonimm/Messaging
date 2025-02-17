@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import CustomInputField from "../components/CustomInputField";
-import { SafeAreaView, Text } from "react-native";
+import { SafeAreaView, Text, StyleSheet, Pressable } from "react-native";
 import CustomButton from "../components/CustomButton";
 import store from "../store/Store";
 import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
+import Header from "../components/Header";
+import { BLACK } from "../res/colors";
+import Subtext from "../components/Subtext";
+import CustomPressable from "../components/CustomPressable";
 
 const Login = () => {
     const navigation = useNavigation();
@@ -38,31 +42,49 @@ const Login = () => {
         },[login]
     );
     return(
-        <SafeAreaView style={{flex: 1}}>
-            <Text>Email</Text>
+        <SafeAreaView style={styles.container}>
+            <Header
+                text={"Messaging"}
+            />
+            <Subtext
+                text={"Email"}
+            />
             <CustomInputField
                 text={'Enter Email'}
                 onChangeText={t => setEmail(t)}
             />
-            <Text>Password</Text>
+            <Subtext
+                text={"Password"}
+            />
             <CustomInputField
                 text={'Enter Password'}
                 onChangeText={t => setPassword(t)}
+            />
+            <CustomPressable
+                onPress={() => onForgotPasswordPress()}
+                text={"Forgot Password"}
             />
             <CustomButton
                 text={"Login"}
                 onPress={() => onSubmitPress(email, password)}
             />
-            <CustomButton
-                text={"Create Account"}
+            <CustomPressable
                 onPress={() => toCreateAccountPage()}
+                text={"Create Account"}
             />
-            <CustomButton
+            {/* <CustomButton
             text={"Forgot Password"}
             onPress={() => onForgotPasswordPress()}
-            />
+            /> */}
         </SafeAreaView>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: BLACK
+    }
+})
 
 export default Login;

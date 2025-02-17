@@ -10,7 +10,7 @@ const CustomButton = props => {
     const {text} = props;
 
     return(
-        <TouchableOpacity style={styles.buttonStyle}
+        <TouchableOpacity style={{...styles.buttonStyle, ...props.style}}
         onPress={props.onPress}
         >
         <Text style={styles.textStyle}>
@@ -22,12 +22,14 @@ const CustomButton = props => {
 
 const styles = StyleSheet.create({
     buttonStyle: {
+        //flex:1,
         height: '10%',
-        width: '30%',
+        width: '75%',
         backgroundColor: 'black',
         borderRadius: 30,
         alignSelf: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        margin: '5%'
     },
     textStyle: {
         zIndex:1,

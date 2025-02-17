@@ -12,9 +12,9 @@ class FirestoreHelper{
         console.error(error);
     }
 
-    getFirestoreDataRealTime = (callback) => {
+    getFirestoreDataRealTime = (callback, collectionName) => {
         
-        return firestore().collection('messages').orderBy("timeStamp", "asc").onSnapshot(docSnapshot=>{
+        return firestore().collection(collectionName).orderBy("timeStamp", "asc").onSnapshot(docSnapshot=>{
             let messages = [];
             docSnapshot.docs.forEach(element => {
                 messages.push(element.data());
@@ -27,9 +27,9 @@ class FirestoreHelper{
 
     };
 
-    addToCollection = async(email, message, timeStamp, collectionName) => {
+    addToCollection = async(email, message, collectionName) => {
         try {
-            firestore().collection('messages').add({
+            firestore().collection(collectionName).add({
                 email: email,
                 //timeStamp: FieldValue,
                 message: message,

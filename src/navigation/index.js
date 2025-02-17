@@ -7,10 +7,16 @@ import { useSelector } from "react-redux";
 import { createStaticNavigation } from "@react-navigation/native";
 import ChatLanding from "../screens/ChatLanding";
 import ForgotPassword from "../screens/ForgotPassword";
+import { BLACK } from "../res/colors";
 
 
 const LoginStack = createNativeStackNavigator({
     initialRouteName: "Login",
+    screenOptions: {
+        headerTitle: '',
+        headerStyle:{backgroundColor: BLACK},
+        headerTintColor:'red',
+    },  
     screens:{
         CreateAccount: CreateAccount,
         Login: Login,
@@ -18,6 +24,11 @@ const LoginStack = createNativeStackNavigator({
     }
 });
 const ChatStack = createNativeStackNavigator({
+    screenOptions: {
+        headerTitle: '',
+        headerStyle:{backgroundColor: BLACK},
+        headerTintColor:'red',
+    },  
     screens:{
         ChatLanding: ChatLanding,
         Chat: Chat

@@ -4,12 +4,20 @@
     "appVersionSource": "remote"
   },
   "build": {
+    "preview_debug": {
+      "env": {
+        "EX_UPDATES_NATIVE_DEBUG": "1"
+      }
+    },
     "development": {
       "developmentClient": true,
       "distribution": "internal"
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": {
+        "API_URL": "Y"
+      }
     },
     "production": {
       "autoIncrement": true

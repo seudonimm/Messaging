@@ -6,9 +6,10 @@ import {
     View,
     Text
 } from "react-native"
+import { BLACK, RED, WHITE } from "../res/colors";
 
 
-const CustomInputField = (props) => {
+const CustomMessageInputField = (props) => {
     const {text, inputErrorMessage} = props;
 
     return(
@@ -17,10 +18,9 @@ const CustomInputField = (props) => {
                 <TextInput 
                     style={styles.inputStyle}
                     placeholder={text}
-                    placeholderTextColor={"white"}
+                    placeholderTextColor={BLACK}
                     onChangeText={props.onChangeText}
-                    cursorColor={'white'}
-                    ref={props.ref}
+                    cursorColor={RED}
                 />
             </View>
             <Text style={styles.textStyle}>
@@ -32,22 +32,23 @@ const CustomInputField = (props) => {
 
 const styles = StyleSheet.create({
     container:{
+        //flex: 1,
         height: 50,
         width: '90%',
         alignSelf: 'center',
-        backgroundColor: '#1e1d24',
+        backgroundColor: WHITE,
         borderRadius: 30,
         //justifyContent: 'left',
         borderWidth: 1,
-        borderColor: 'white',
-        //margin: '2%',
+        //borderColor: 'white',
+        marginTop: '2%',
         paddingLeft: '10%',
         color: 'white'
     },
     inputStyle: {
         flex: 1,
         height: 50,
-        color: 'white'
+        color: BLACK
     },
     textStyle: {
         color: 'red',
@@ -55,4 +56,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default memo(CustomInputField);
+export default memo(CustomMessageInputField);
