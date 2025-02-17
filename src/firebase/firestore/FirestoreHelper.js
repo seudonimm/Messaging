@@ -18,8 +18,8 @@ class FirestoreHelper{
             let messages = [];
             docSnapshot.docs.forEach(element => {
                 messages.push(element.data());
-                console.log("elements: "+ JSON.stringify(element.data()))
-                console.log(messages.length)
+                //console.log("elements: "+ JSON.stringify(element.data()))
+                //console.log(messages.length)
             });
             callback(messages);
         });

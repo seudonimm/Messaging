@@ -4,15 +4,20 @@ import { createAction, createSlice } from "@reduxjs/toolkit";
 const chatSlice = createSlice({
     name: 'chat',
     initialState: {
-        data: null
+        data: null,
+        unsubscriber: null
 
     },
     reducers:{
         getMessages: (state, action) => {
-            state.user = null;
+            state.data = null;
         },
         getMessagesSuccess: (state, action) => {
-            state.data = action.payload;
+            state.data = action.payload[0];
+            state.unsubscriber = action.payload[1];
+            
+            console.log("payload" +action.payload);
+
             console.log(state);
         },
         getMessagesFailure: (state, action) => {
@@ -29,4 +34,4 @@ export const {
     getMessagesFailure
 } = chatSlice.actions;
 
-export default loginSlice;
+export default chatSlice;

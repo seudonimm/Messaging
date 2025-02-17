@@ -1,15 +1,30 @@
-import { takeLatest } from "redux-saga/effects";
+import { takeLatest, put, call, delay } from "redux-saga/effects";
 import FirestoreHelper from "../../firebase/firestore/FirestoreHelper";
 import { getMessagesFailure, getMessagesSuccess } from "../slices/ChatSlice";
 
 function* getRealtimeData(){
     try{
-        let data = yield call(FirestoreHelper.getFirestoreDataRealTime, messages);
+        let messages = [];
 
-        yield put(getMessagesSuccess());
+        // let data = yield call(FirestoreHelper.getFirestoreDataRealTime, messages);
+        const subscriber = yield call(FirestoreHelper.getFirestoreDataRealTime, storeMessages =>{
+            //messages = [...storeMessages];
+            //console.log("Massages inside: "+ JSON.stringify(messages));
+            storeMessages.forEach(element => {
+                messages.push(element);
+                //console.log("elements: "+ JSON.stringify(element.data()))
+                //console.log(messages.length)
+            });
+            return messages;
+        })
+        
+        yield delay(1000);
+
+        console.log("Massages: "+ JSON.stringify(messages));
+        yield put(getMessagesSuccess([messages, subscriber]));
     }catch(e){
         console.log(e);
-        yield put(getMessagesFailure());
+        yield put(getMessagesFailure(e));
     }
 }
 
@@ -22,3 +37,5 @@ function* ChatSaga () {
     yield takeLatest('SEND_MESSAGE', sendMessageToCollection);
 
 }
+
+export default ChatSaga;

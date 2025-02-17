@@ -5,24 +5,28 @@ import FlatlistMessageBox from "../components/FlatlistMessageBox";
 import { firebase } from "@react-native-firebase/auth";
 import CustomButton from "../components/CustomButton";
 import CustomInputField from "../components/CustomInputField";
+import { useSelector } from "react-redux";
+import store from "../store/Store";
 
 const Chat = () => {
-    const [messages, setMessages] = useState();
-    const [loading, setLoading] = useState();
+    const chat = useSelector(state => state.chat);
+
+    const [messages, setMessages] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const [currentMessage, setCurrentMessage] = useState();
 
     const user = useRef(null);
 
-    const flatlistItemRender = (username, message, timeStamp) => {
-        //console.log(timeStamp.toDate().toString())
-        return(
-                timeStamp?
-                <FlatlistMessageBox style={{...styles.messageBox, alignSelf:(username==user.current.email?'flex-end':'flex-start')}}
+    const flatlistItemRender = (username, message, timeStamp, item) => {
+        console.log("flatlist: "+ username, message, timeStamp)
+
+        return  timeStamp?(
+                <FlatlistMessageBox style={{flex:1}}
                     username={username}
                     message={message}
                     timeStamp={timeStamp.toDate().toString()}
-                />:<ActivityIndicator/>
+                />):(<ActivityIndicator/>
         );
     };
 
@@ -32,29 +36,43 @@ const Chat = () => {
 
     useEffect(
         () => {
-            console.log("chat")
-            const subscriber = FirestoreHelper.getFirestoreDataRealTime(storeMessages =>{
-                //console.log("chat messages:" + storeMessages[1].message);
-                setMessages(storeMessages);
-                //console.log("checkig messages:" + messages[1].email)
-            })
+            // const subscriber = FirestoreHelper.getFirestoreDataRealTime(storeMessages =>{
+            //     //console.log("chat messages:" + storeMessages[1].message);
+            //     setMessages(storeMessages);
+            //     //console.log("checkig messages:" + messages[1].email)
+            // })
             //console.log(subscriber);
-            return () => subscriber();
-        }, []
+            if(chat && loading){
+                setMessages(chat.data);
+                //console.log("chatt: " +JSON.stringify(messages));
+                setLoading(false);
+                //console.log("message length:" +messages.length)
+            }
+            console.log('useEffect1')
+
+        }, [chat]
     )
     useEffect(
         () => {
+            store.dispatch({type: 'GET_REALTIME_DATA'})
+
             user.current = firebase.auth().currentUser
             //console.log("user:" + user.current.email)
+            console.log('useEffect2')
+
+            //return chat.unsubscribe;
         }, []
     )
     return(
         <SafeAreaView style={styles.container}>
-            <View style={{flex:9}}>
+            <View style={{flex:9, backgroundColor: 'lightblue' }}>
+                {(chat.data)?
                 <FlatList
-                    data={messages}
-                    renderItem={({item}) => flatlistItemRender(item.email, item.message, item.timeStamp)}
-                />
+                    data={chat.data}
+                    renderItem={({item}) => {flatlistItemRender(item.email, item.message, item.timeStamp, item)}}
+                    keyExtractor={({item, index})=>index}
+                />:<ActivityIndicator/>
+                }
             </View>
             <View style={styles.container}>
                 <CustomInputField
@@ -78,7 +96,7 @@ const styles = StyleSheet.create({
     },
     messageBox: {
         flex: 1,
-        // height: 50,
+        height: 50,
         width: '70%',
         borderWidth: 1,
         color: 'black',

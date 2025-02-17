@@ -9,6 +9,7 @@ import logger from 'redux-logger';
 //import AsyncStorage from "@react-native-async-storage/async-storage";
 import LoginSaga from "./sagas/LoginSaga";
 import rootSaga from "./sagas/rootSaga";
+import chatSlice from "./slices/ChatSlice";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -22,6 +23,7 @@ const sagaMiddleware = createSagaMiddleware();
 const store = configureStore({
     reducer: {
         //list: persistedReducer,//listSlice.reducer
+        chat: chatSlice.reducer,
         login: loginSlice.reducer
     },
     devTools: process.env.NODE_ENV !== 'production',
