@@ -60,6 +60,7 @@ const Chat = (props) => {
             console.log('useEffect1')
             user.current = firebase.auth().currentUser;
             console.log("user:" + user.current.email);
+            setLoading(false);
         }, []
     )
     useEffect(
@@ -69,24 +70,25 @@ const Chat = (props) => {
             store.dispatch({type: 'GET_REALTIME_DATA'})
             
             setTimeout(() => {
-                chatList.current.scrollToEnd();
+                //chatList.current.scrollToEnd();
 
             }, 100);
             console.log('useEffect2')
 
-            //return chat.unsubscribe;
+            //return store.dispatch({type: 'GET_REALTIME_DATA'});
         }, []
     )
     return(
         <SafeAreaView style={styles.container}>
             <View style={{flex:8}}>
+                {(!loading && user.current)?
                 <FlatList
                     initialNumToRender={30}
                     ref={chatList}
                     data={chat.data}
                     renderItem={flatlistItemRender}
                     keyExtractor={(item)=>item.id}
-                />
+                />:<ActivityIndicator/>}
                 <ScrollView>
                     {/* {chat.data.map(
                         (item, index)=>{

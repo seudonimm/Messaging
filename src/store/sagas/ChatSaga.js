@@ -57,18 +57,21 @@ function getData(){
 
 function* getDataSaga(){
     const chan = yield call(getData);
+    console.log("chan:"+JSON.stringify(getData));
     try {
         console.log("trying");
         while(true){
             let data = yield take(chan);
-            console.log("data:" +data)
-            yield put(getMessagesSuccess(data));
+            console.log("data:" +JSON.stringify(data))
+            yield put(getMessagesSuccess([data]));
         }
-    } catch (e) {
-        yield put(getMessagesFailure(e));
     } finally {
         let val = yield cancelled();
+        console.log("endding before");
+
         if(val){
+            console.log("endding");
+
             chan.close()
         }
     }
