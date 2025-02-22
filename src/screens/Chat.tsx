@@ -6,19 +6,19 @@ import { firebase } from "@react-native-firebase/auth";
 import CustomButton from "../components/CustomButton";
 import CustomInputField from "../components/CustomInputField";
 import { useSelector } from "react-redux";
-import store from "../store/Store";
+import store, { RootState } from "../store/Store";
 import { BLACK, RED, WHITE } from "../res/colors";
 import CustomMessageInputField from "../components/CustomMessageInputField";
 
 const Chat = (props) => {
     const {chatRoom} = props.route.params;
 
-    const chat = useSelector(state => state.chat);
+    const chat = useSelector((state:RootState) => state.chat);
 
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const [currentMessage, setCurrentMessage] = useState();
+    const [currentMessage, setCurrentMessage] = useState('');
 
     const user = useRef(null);
     const inputBox = useRef(null);
@@ -123,7 +123,6 @@ const styles = StyleSheet.create({
     inputContainer: {
         flex: 2,
         backgroundColor: RED,
-        borderTopRadius: 20
     },
     messageBox: {
         flex: 1,

@@ -1,15 +1,19 @@
-import React from "react";
+import React from 'react';
 import {
     StyleSheet,
     Text
 } from 'react-native';
 import { WHITE } from "../res/colors";
 
+interface HeaderProps{
+    text:String
+}
+
 const Header = (props) => {
-    const {text, isLeft} = props;
+    const {text} = props;
     return(
         <Text
-            style={isLeft ? styles.leftTextStyle:styles.textStyle}
+            style={styles.textStyle}
         >
             {text}
         </Text>

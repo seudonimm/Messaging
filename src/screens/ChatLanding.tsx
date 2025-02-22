@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FlatList, SafeAreaView, Text, View, StyleSheet, ActivityIndicator } from "react-native";
 import CustomButton from "../components/CustomButton";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, NavigationProp, ParamListBase } from "@react-navigation/native";
 import store from "../store/Store";
 import { BLACK } from "../res/colors";
 import Header from "../components/Header";
@@ -10,7 +10,7 @@ import CustomInputField from "../components/CustomInputField";
 
 const ChatLanding = () => {
     const [chatRoomName, setChatRoomName] = useState('');
-    const navigation = useNavigation();
+    const navigation:NavigationProp<ParamListBase> = useNavigation();
 
     const toChatPage = () => {
         console.log(chatRoomName);

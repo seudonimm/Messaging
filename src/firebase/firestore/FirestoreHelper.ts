@@ -1,4 +1,4 @@
-import firestore, { FieldValue, Timestamp } from '@react-native-firebase/firestore'
+import firestore, {  serverTimestamp } from '@react-native-firebase/firestore'
 
 
 class FirestoreHelper{
@@ -17,9 +17,8 @@ class FirestoreHelper{
         return firestore().collection(collectionName).orderBy("timeStamp", "asc").onSnapshot(docSnapshot=>{
             let messages = [];
             docSnapshot.docs.forEach(element => {
-                messages.push({...element.data(), id:doc.id});
-                //console.log("elements: "+ JSON.stringify(element.data()))
-                //console.log(messages.length)
+                messages.push({...element.data(), id:element.id});
+
             });
             callback(messages);
         });
@@ -27,13 +26,12 @@ class FirestoreHelper{
 
     };
 
-    addToCollection = async(email, message, collectionName) => {
+    addToCollection = async(email:string, message:string, collectionName:string) => {
         try {
             firestore().collection(collectionName).add({
                 email: email,
-                //timeStamp: FieldValue,
                 message: message,
-                timeStamp: FieldValue.serverTimestamp()
+                timeStamp: serverTimestamp()
             })
         } catch (e) {
             console.log(e);

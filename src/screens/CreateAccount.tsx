@@ -2,18 +2,18 @@ import React, { useEffect, useState } from "react";
 import CustomInputField from "../components/CustomInputField";
 import { SafeAreaView, Text,StyleSheet } from "react-native";
 import CustomButton from "../components/CustomButton";
-import store from "../store/Store";
+import store, { RootState } from "../store/Store";
 import { useSelector } from "react-redux";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, NavigationProp, ParamListBase } from "@react-navigation/native";
 import Header from "../components/Header";
 import Subtext from "../components/Subtext";
 import { BLACK } from "../res/colors";
 import CustomPressable from "../components/CustomPressable";
 
 const CreateAccount = () => {
-    const navigation = useNavigation();
+    const navigation:NavigationProp<ParamListBase> = useNavigation();
 
-    const login = useSelector(state => state.login);
+    const login = useSelector((state:RootState) => state.login);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');

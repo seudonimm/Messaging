@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import CustomInputField from "../components/CustomInputField";
-import { SafeAreaView, Text } from "react-native";
+import { SafeAreaView, StyleSheet, Text } from "react-native";
 import CustomButton from "../components/CustomButton";
 import store from "../store/Store";
 import { useSelector } from "react-redux";
 import CreateAccount from "./CreateAccount";
 import { useNavigation } from "@react-navigation/native";
 import FirestoreHelper from "../firebase/firestore/FirestoreHelper";
+import Subtext from "../components/Subtext";
+import { BLACK } from "../res/colors";
 
 const ForgotPassword = () => {
     const navigation = useNavigation();
@@ -20,8 +22,10 @@ const ForgotPassword = () => {
     }
 
     return(
-        <SafeAreaView style={{flex: 1}}>
-            <Text>Email</Text>
+        <SafeAreaView style={styles.container}>
+            <Subtext
+                text={"Email"}
+            />
             <CustomInputField
                 text={'Enter Email'}
                 onChangeText={t => setEmail(t)}
@@ -33,5 +37,12 @@ const ForgotPassword = () => {
         </SafeAreaView>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: BLACK
+    }
+})
 
 export default ForgotPassword;

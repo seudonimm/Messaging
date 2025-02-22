@@ -73,7 +73,7 @@ function* logout(){
 
 }
 
-function* LoginSaga(email, password){
+function* LoginSaga(){
     yield takeLatest('LOG_IN', logInToAccount);
     yield takeLatest('CREATE_ACCOUNT', createAccount);
     yield takeLatest('CHANGE_PASSWORD', changePassword);

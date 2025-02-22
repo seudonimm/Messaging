@@ -16,7 +16,7 @@ const loginSlice = createSlice({
             state.loggedIn = true;
             console.log(state);
         },
-        createAccountFailure: (state, action) => {
+        createAccountFailure: (state) => {
             state.user = null
             console.log("error");
         },

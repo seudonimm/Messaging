@@ -4,31 +4,28 @@ import { getMessagesFailure, getMessagesSuccess } from "../slices/ChatSlice";
 import { eventChannel } from "redux-saga";
 import firestore, { FieldValue, onSnapshot, Timestamp } from '@react-native-firebase/firestore'
 
-function* getRealtimeData(){
-    try{
-        let messages = [];
+// function* getRealtimeData(){
+//     try{
+//         let messages = [];
 
-        // let data = yield call(FirestoreHelper.getFirestoreDataRealTime, messages);
-        const subscriber = yield call(FirestoreHelper.getFirestoreDataRealTime, storeMessages =>{
-            //messages = [...storeMessages];
-            //console.log("Massages inside: "+ JSON.stringify(messages));
-            storeMessages.forEach(element => {
-                messages.push(element);
-                //console.log("elements: "+ JSON.stringify(element.data()))
-                //console.log(messages.length)
-            });
-            return messages;
-        })
+//         // let data = yield call(FirestoreHelper.getFirestoreDataRealTime, messages);
+//         const subscriber = yield call(FirestoreHelper.getFirestoreDataRealTime, storeMessages =>{
+//             storeMessages.forEach(element => {
+//                 messages.push(element);
+
+//             });
+//             return messages;
+//         })
         
-        yield delay(1000);
+//         yield delay(1000);
 
-        console.log("Massages: "+ JSON.stringify(messages));
-        yield put(getMessagesSuccess([messages, subscriber]));
-    }catch(e){
-        console.log(e);
-        yield put(getMessagesFailure(e));
-    }
-}
+//         console.log("Massages: "+ JSON.stringify(messages));
+//         yield put(getMessagesSuccess([messages, subscriber]));
+//     }catch(e){
+//         console.log(e);
+//         yield put(getMessagesFailure(e));
+//     }
+// }
 
 function* sendMessageToCollection(){
     //let data = yield call FirestoreHelper.getFirestoreDataRealTime(messages);
