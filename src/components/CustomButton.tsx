@@ -1,17 +1,26 @@
 import React, { memo } from "react";
 import { 
+    GestureResponderEvent,
+    StyleProp,
     StyleSheet,
     Text,
     TouchableOpacity,
+    ViewStyle,
 } from "react-native";
 
-const CustomButton = props => {
+interface Props{
+    text:string,
+    style?: object,
+    onPress: (event: GestureResponderEvent) => void
+
+}
+const CustomButton:React.FC<Props> = props => {
 
     const {text} = props;
 
     return(
         <TouchableOpacity style={{...styles.buttonStyle, ...props.style}}
-        onPress={props.onPress}
+            onPress={props.onPress}
         >
         <Text style={styles.textStyle}>
             {text}

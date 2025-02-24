@@ -5,11 +5,11 @@ import {
 } from 'react-native';
 import { WHITE } from "../res/colors";
 
-interface HeaderProps{
+interface Props{
     text:String
 }
 
-const Header = (props) => {
+const Header:React.FC<Props> = (props) => {
     const {text} = props;
     return(
         <Text

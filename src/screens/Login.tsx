@@ -10,15 +10,15 @@ import { BLACK } from "../res/colors";
 import Subtext from "../components/Subtext";
 import CustomPressable from "../components/CustomPressable";
 
-const Login = () => {
+const Login:React.FC = () => {
     const navigation:NavigationProp<ParamListBase> = useNavigation();
 
     const login = useSelector((state:RootState) => state.login);
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
 
-    const onSubmitPress = (email, password) => {
+    const onSubmitPress = (email:string, password:string):void => {
         console.log("pressed")
  
         store.dispatch({type:'LOG_IN', payload: {email, password}});
@@ -26,11 +26,11 @@ const Login = () => {
 
     };
 
-    const toCreateAccountPage = () => {
+    const toCreateAccountPage = ():void => {
         navigation.navigate("CreateAccount");
     }
 
-    const onForgotPasswordPress = () => {
+    const onForgotPasswordPress = ():void => {
         navigation.navigate("ForgotPassword");
     }
     useEffect(
@@ -51,25 +51,29 @@ const Login = () => {
             />
             <CustomInputField
                 text={'Enter Email'}
-                onChangeText={t => setEmail(t)}
+                onChangeText={(t:string):void => setEmail(t)}
             />
             <Subtext
                 text={"Password"}
             />
             <CustomInputField
                 text={'Enter Password'}
-                onChangeText={t => setPassword(t)}
+                onChangeText={(t:string):void => setPassword(t)}
             />
             <CustomPressable
-                onPress={() => onForgotPasswordPress()}
+                onPress={():void => onForgotPasswordPress()}
                 text={"Forgot Password"}
             />
             <CustomButton
                 text={"Login"}
-                onPress={() => onSubmitPress(email, password)}
+                onPress={():void => onSubmitPress(email, password)}
             />
             <CustomPressable
-                onPress={() => toCreateAccountPage()}
+                onPress={():void => toCreateAccountPage()}
+                text={"Create Account"}
+            />
+            <CustomPressable
+                onPress={():void => navigation.navigate('PushNotificationManager')}
                 text={"Create Account"}
             />
             {/* <CustomButton

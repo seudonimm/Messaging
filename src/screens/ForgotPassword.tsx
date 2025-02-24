@@ -10,13 +10,12 @@ import FirestoreHelper from "../firebase/firestore/FirestoreHelper";
 import Subtext from "../components/Subtext";
 import { BLACK } from "../res/colors";
 
-const ForgotPassword = () => {
-    const navigation = useNavigation();
+const ForgotPassword:React.FC = () => {
 
     const [email, setEmail] = useState('');
  
 
-    const onForgotPasswordPress = (email) => {
+    const onForgotPasswordPress = (email:string):void => {
         console.log("email "+ email);
         store.dispatch({type:'CHANGE_PASSWORD', payload: {email}})
     }
@@ -28,11 +27,11 @@ const ForgotPassword = () => {
             />
             <CustomInputField
                 text={'Enter Email'}
-                onChangeText={t => setEmail(t)}
+                onChangeText={(t:string):void => setEmail(t)}
             />
             <CustomButton
             text={"Send Email Reset Link"}
-            onPress={() => onForgotPasswordPress(email)}
+            onPress={():void => onForgotPasswordPress(email)}
             />
         </SafeAreaView>
     );

@@ -9,24 +9,38 @@ import { useSelector } from "react-redux";
 import store, { RootState } from "../store/Store";
 import { BLACK, RED, WHITE } from "../res/colors";
 import CustomMessageInputField from "../components/CustomMessageInputField";
+import { FieldValue, Timestamp } from "@react-native-firebase/firestore";
+import { StaticScreenProps } from "@react-navigation/native";
 
-const Chat = (props) => {
+type Props = StaticScreenProps<{
+    chatRoom:string
+    route:object
+}>
+
+export interface FlatlistItemRenderParams{
+    email:string,
+    message:string,
+    timeStamp:Timestamp,
+    id:string
+}
+const Chat:React.FC<Props> = (props) => {
     const {chatRoom} = props.route.params;
 
     const chat = useSelector((state:RootState) => state.chat);
 
-    const [messages, setMessages] = useState([]);
-    const [loading, setLoading] = useState(true);
+    //const [messages, setMessages] = useState([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
-    const [currentMessage, setCurrentMessage] = useState('');
+    const [currentMessage, setCurrentMessage] = useState<string>('');
 
     const user = useRef(null);
     const inputBox = useRef(null);
 
     const chatList = useRef()
 
-    const flatlistItemRender = ({item}) => {
-        console.log("flatlist: "+ item.email, item.message)
+
+    const flatlistItemRender = ({item}:{item:FlatlistItemRenderParams}) => {
+        console.log("timestamp type: "+ typeof(item.timeStamp));
 
         return  (item.timeStamp?
                 <FlatlistMessageBox style={{...styles.messageBox, alignSelf:(item.email==user.current.email?'flex-end':'flex-start')}}
@@ -37,7 +51,7 @@ const Chat = (props) => {
         );
     };
 
-    const sendMessage = (message) => {
+    const sendMessage = (message:string) => {
         FirestoreHelper.addToCollection(user.current.email, message, chatRoom);
         //inputBox.current.clear();
         setCurrentMessage("");
@@ -45,24 +59,16 @@ const Chat = (props) => {
 
     useEffect(
         () => {
-            // const subscriber = FirestoreHelper.getFirestoreDataRealTime(storeMessages =>{
-            //     //console.log("chat messages:" + storeMessages[1].message);
-            //     setMessages(storeMessages);
-            //     //console.log("checkig messages:" + messages[1].email)
-            // })
-            //console.log(subscriber);
-            // if(chat && loading){
-            //     //setMessages(chat.data);
-            //     console.log("chatt: " +JSON.stringify(chat.data));
-            //     setLoading(false);
-            //     //console.log("message length:" +messages.length)
-            // }
+
             console.log('useEffect1')
             user.current = firebase.auth().currentUser;
             console.log("user:" + user.current.email);
             setLoading(false);
         }, []
     )
+    const stopListening = () => {
+        store.dispatch({type: 'STOP_LISTENING'});
+    }
     useEffect(
         () => {
 
@@ -75,7 +81,7 @@ const Chat = (props) => {
             }, 100);
             console.log('useEffect2')
 
-            //return store.dispatch({type: 'GET_REALTIME_DATA'});
+            return stopListening();
         }, []
     )
     return(

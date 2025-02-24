@@ -1,18 +1,27 @@
-import { createAction, createSlice } from "@reduxjs/toolkit";
+import { createAction, createSlice, Slice } from "@reduxjs/toolkit";
+import { FlatlistItemRenderParams } from "../../screens/Chat";
+import { PayloadAction } from "@reduxjs/toolkit";
+import { ActionType } from "../sagas/LoginSaga";
 
+type ChatSliceType = Slice<{
+    data:Array<FlatlistItemRenderParams>,
+}>
 
-const chatSlice = createSlice({
+interface StateType{
+    data: Array<FlatlistItemRenderParams>
+}
+const chatSlice:ChatSliceType = createSlice({
     name: 'chat',
     initialState: {
         data: null,
-        unsubscriber: null
+        //unsubscriber: null
 
     },
     reducers:{
-        getMessages: (state, action) => {
+        getMessages: (state:StateType):void => {
             state.data = null;
         },
-        getMessagesSuccess: (state, action) => {
+        getMessagesSuccess: (state:StateType, action:PayloadAction<ActionType>):void => {
             state.data = action.payload[0];
             //state.unsubscriber = action.payload[1];
             
@@ -20,7 +29,7 @@ const chatSlice = createSlice({
 
             //console.log(state);
         },
-        getMessagesFailure: (state, action) => {
+        getMessagesFailure: (state:StateType):void => {
             state.data = null
             console.log("error");
         }

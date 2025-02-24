@@ -7,8 +7,13 @@ import {
     Text
 } from "react-native"
 
-
-const CustomInputField = (props) => {
+interface Props{
+    text:string,
+    inputErrorMessage?:string,
+    onChangeText:(text:string)=>void,
+    ref?:React.LegacyRef<TextInput>
+}
+const CustomInputField:React.FC<Props> = (props) => {
     const {text, inputErrorMessage} = props;
 
     return(

@@ -5,11 +5,15 @@ import {
 } from 'react-native';
 import { RED, WHITE } from "../res/colors";
 
-const Subtext = (props) => {
-    const {text, isLeft} = props;
+interface Props{
+    text:String
+}
+
+const Subtext:React.FC<Props> = (props) => {
+    const {text} = props;
     return(
         <Text
-            style={isLeft ? styles.leftTextStyle:styles.textStyle}
+            style={styles.textStyle}
         >
             {text}
         </Text>

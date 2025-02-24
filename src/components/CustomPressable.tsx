@@ -1,8 +1,13 @@
 import React from "react";
-import { StyleSheet, Pressable, Text } from "react-native";
+import { StyleSheet, Pressable, Text, GestureResponderEvent } from "react-native";
 import { WHITE } from "../res/colors";
 
-const CustomPressable = (props) => {
+interface Props{
+    text:string,
+    onPress:(event: GestureResponderEvent) => void
+}
+
+const CustomPressable:React.FC<Props> = (props) => {
     const {text} = props;
 
     return(

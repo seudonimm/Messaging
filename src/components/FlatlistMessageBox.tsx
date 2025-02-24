@@ -1,8 +1,16 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, StyleProp, TextStyle } from "react-native";
 import { RED } from "../res/colors";
+import { FieldPath, FieldValue } from "@react-native-firebase/firestore";
 
-const FlatlistMessageBox = (props) => {
+interface Props{
+    username:string,
+    message:string,
+    timeStamp:string,
+    style:StyleProp<TextStyle>
+}
+
+const FlatlistMessageBox:React.FC<Props> = (props) => {
     const {username, message, timeStamp} = props;
 
     return(

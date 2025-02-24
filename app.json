@@ -25,7 +25,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "googleServicesFile": "./googleServiceFiles/google-services.json",
+      "googleServicesFile": "android/app/src/release/google-services.json",
       "package": "com.jusman.MessagingApp"
     },
     "web": {

@@ -10,15 +10,15 @@ import Subtext from "../components/Subtext";
 import { BLACK } from "../res/colors";
 import CustomPressable from "../components/CustomPressable";
 
-const CreateAccount = () => {
+const CreateAccount:React.FC = () => {
     const navigation:NavigationProp<ParamListBase> = useNavigation();
 
     const login = useSelector((state:RootState) => state.login);
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
 
-    const onSubmitPress = (email, password) => {
+    const onSubmitPress = (email:string, password:string):void => {
         console.log("pressed")
  
         store.dispatch({type:'CREATE_ACCOUNT', payload: {email, password}});
@@ -26,7 +26,7 @@ const CreateAccount = () => {
 
     };
 
-    const onToLoginPress = () => {
+    const onToLoginPress = ():void => {
         navigation.navigate("Login");
     }
     useEffect(
@@ -48,22 +48,22 @@ const CreateAccount = () => {
             />
             <CustomInputField
                 text={'Enter Email'}
-                onChangeText={t => setEmail(t)}
+                onChangeText={(t:string):void => setEmail(t)}
             />
             <Subtext
                 text={"Password"}
             />
             <CustomInputField
                 text={'Enter Password'}
-                onChangeText={t => setPassword(t)}
+                onChangeText={(t:string):void => setPassword(t)}
             />
             <CustomButton
                 text={"Create Account"}
-                onPress={() => onSubmitPress(email, password)}
+                onPress={():void => onSubmitPress(email, password)}
             />
             <CustomPressable
                 text={"Log In"}
-                onPress={() => onToLoginPress()}
+                onPress={():void => onToLoginPress()}
             />
         </SafeAreaView>
     );

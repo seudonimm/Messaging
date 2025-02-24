@@ -8,8 +8,14 @@ import {
 } from "react-native"
 import { BLACK, RED, WHITE } from "../res/colors";
 
+interface Props{
+    text:string,
+    inputErrorMessage?:string,
+    onChangeText:(text:string)=>void,
+    ref?:React.LegacyRef<TextInput>
+}
 
-const CustomMessageInputField = (props) => {
+const CustomMessageInputField:React.FC<Props> = (props) => {
     const {text, inputErrorMessage} = props;
 
     return(

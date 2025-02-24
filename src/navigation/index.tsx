@@ -11,6 +11,7 @@ import ForgotPassword from "../screens/ForgotPassword";
 import { BLACK } from "../res/colors";
 import { RootState } from "../store/Store";
 import type { StaticParamList } from "@react-navigation/native";
+import PushNotificationManager from "../../pushNotification/PushNotificationManager";
 
 const LoginStack:StaticParamList = createNativeStackNavigator({
     initialRouteName: "Login",
@@ -22,7 +23,8 @@ const LoginStack:StaticParamList = createNativeStackNavigator({
     screens: {
         CreateAccount: CreateAccount,
         Login: Login,
-        ForgotPassword: ForgotPassword
+        ForgotPassword: ForgotPassword,
+        PushNotificationManager: PushNotificationManager
     },
     id: undefined
 });

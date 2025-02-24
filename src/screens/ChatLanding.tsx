@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, SafeAreaView, Text, View, StyleSheet, ActivityIndicator } from "react-native";
 import CustomButton from "../components/CustomButton";
 import { useNavigation, NavigationProp, ParamListBase } from "@react-navigation/native";
@@ -8,19 +8,29 @@ import Header from "../components/Header";
 import Subtext from "../components/Subtext";
 import CustomInputField from "../components/CustomInputField";
 
-const ChatLanding = () => {
-    const [chatRoomName, setChatRoomName] = useState('');
+const ChatLanding:React.FC = () => {
+    const [chatRoomName, setChatRoomName] = useState<string>('');
     const navigation:NavigationProp<ParamListBase> = useNavigation();
 
-    const toChatPage = () => {
+    const toChatPage = ():void => {
         console.log(chatRoomName);
         navigation.navigate("Chat", {chatRoom:chatRoomName});
 
     }
 
-    const logout = () => {
+    const logout = ():void => {
+        store.dispatch({type: 'STOP_LISTENING'});
+
         store.dispatch({type: "LOGOUT"});
+
     }
+    useEffect(
+        () => {
+            console.log("dkdkdkdkdkdkd")
+            //store.dispatch({type: 'STOP_LISTENING'});
+
+        },[]
+    )
     return(
         <SafeAreaView style={styles.container}>
             <Header
@@ -29,11 +39,11 @@ const ChatLanding = () => {
             {/* <View style={styles.subContainer}> */}
             <CustomInputField
                 text={"Enter Chat Room Name"}
-                onChangeText={t => setChatRoomName(t)}
+                onChangeText={(t:string):void => setChatRoomName(t)}
             />
                 <CustomButton
                     text={"To Chat"}
-                    onPress={() => toChatPage()}
+                    onPress={():void => toChatPage()}
                 />
                 <Subtext
                     text={"Talk to people"}
@@ -43,7 +53,7 @@ const ChatLanding = () => {
             
                 <CustomButton
                     text={"Logout"}
-                    onPress={() => logout()}
+                    onPress={():void => logout()}
                 />
                 <Subtext
                     text={"Leave"}

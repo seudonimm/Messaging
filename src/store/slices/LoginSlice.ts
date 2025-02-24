@@ -1,55 +1,59 @@
-import { createAction, createSlice } from "@reduxjs/toolkit";
+import { createAction, createSlice, Slice } from "@reduxjs/toolkit";
 
-
-const loginSlice = createSlice({
+type LoginSliceType = Slice<{
+    loggedIn:boolean
+}>
+interface StateType{
+    loggedIn:boolean
+}
+const loginSlice:LoginSliceType = createSlice({
     name: 'login',
     initialState: {
-        user: null,
+        //user: null,
         loggedIn: false
     },
     reducers:{
         createAccount: (state, action) => {
-            state.user = null;
+            //state.user = null;
         },
-        createAccountSuccess: (state, action) => {
-            state.user = action.payload;
+        createAccountSuccess: (state:StateType, action) => {
+            //state.user = action.payload;
             state.loggedIn = true;
             console.log(state);
         },
-        createAccountFailure: (state) => {
-            state.user = null
+        createAccountFailure: () => {
+            //state.user = null
             console.log("error");
         },
-        login: (state) => {
-            state.user = null;
+        login: () => {
+            //state.user = null;
         },
-        loginSuccess: (state, action) => {
-            state.user = action.payload;
+        loginSuccess: (state:StateType) => {
+            //state.user = action.payload;
             state.loggedIn = true;
         },
-        loginFailed: (state) => {
-            state.user = null;
+        loginFailed: () => {
+            //state.user = null;
         },
-        logout: (state) => {
+        logout: () => {
 
         },
-        logoutSuccess: (state) => {
-            state.user = null;
+        logoutSuccess: (state:StateType) => {
+            //state.user = null;
             state.loggedIn = false;
         },
-        logoutFailed: (state) => {
-            //can you fail to log out
+        logoutFailed: () => {
         },
-        passwordReset: (state) => {
-            state.user = null;
+        passwordReset: (state:StateType) => {
+            //state.user = null;
             state.loggedIn = false;
         },
-        passwordResetSuccess: (state) => {
-            state.user = null;
+        passwordResetSuccess: (state:StateType) => {
+            //state.user = null;
             state.loggedIn = false;
         },
-        passwordResetFailure: (state) => {
-            state.user = null;
+        passwordResetFailure: (state:StateType) => {
+            //state.user = null;
             state.loggedIn = false;
         }
 

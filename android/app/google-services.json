@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "493293997114",
+    "project_id": "jawad-messaging",
+    "storage_bucket": "jawad-messaging.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:493293997114:android:fba4b84406bcfa27857903",
+        "android_client_info": {
+          "package_name": "com.jusman.MessagingApp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_2cfSMyHEpPIENpwzxYvi7z1FnPq-qx4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
