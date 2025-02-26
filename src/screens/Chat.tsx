@@ -81,7 +81,7 @@ const Chat:React.FC<Props> = (props) => {
             }, 100);
             console.log('useEffect2')
 
-            return stopListening();
+            //return (stopListening());
         }, []
     )
     return(

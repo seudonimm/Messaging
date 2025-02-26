@@ -12,7 +12,7 @@ class FirestoreHelper{
         console.error(error);
     }
 
-    getFirestoreDataRealTime = (callback, collectionName) => {
+    getFirestoreDataRealTime = (callback, collectionName:string) => {
         
         return firestore().collection(collectionName).orderBy("timeStamp", "asc").onSnapshot(docSnapshot=>{
             let messages = [];

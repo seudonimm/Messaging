@@ -2,8 +2,9 @@ import { takeLatest, put, call, delay, cancelled, take, fork, cancel } from "red
 import { getMessagesFailure, getMessagesSuccess } from "../slices/ChatSlice";
 import { EventChannel, eventChannel } from "redux-saga";
 import firestore, { FieldValue, onSnapshot, Timestamp } from '@react-native-firebase/firestore'
+import FirestoreHelper from "../../firebase/firestore/FirestoreHelper";
 
-// function* getRealtimeData(){
+// function* getRealtimeData():Generator{
 //     try{
 //         let messages = [];
 
@@ -25,16 +26,28 @@ import firestore, { FieldValue, onSnapshot, Timestamp } from '@react-native-fire
 //         yield put(getMessagesFailure(e));
 //     }
 // }
-
 function* sendMessageToCollection():Generator{
     //let data = yield call FirestoreHelper.getFirestoreDataRealTime(messages);
 }
 
 function* ChatSaga ():Generator {
-    yield takeLatest('GET_REALTIME_DATA', getDataSaga);
-    yield takeLatest('SEND_MESSAGE', sendMessageToCollection);
-}
+    while (yield take('GET_REALTIME_DATA')){
+        const getDataTask = yield fork(getDataSaga);
 
+        yield take('STOP_LISTENING');
+        yield cancel(getDataTask);
+
+    }
+    //yield takeLatest('GET_REALTIME_DATA', getDataSaga);
+    yield takeLatest('SEND_MESSAGE', sendMessageToCollection);
+    //yield takeLatest('STOP_LISTENING', stopListening)
+
+    //yield cancel(getDataTask);
+}
+//  function* stopListening():Generator{
+//     yield cancel(getDataTask);
+
+//  }
 function getData():EventChannel<{}>{
     return eventChannel(emitter => {
         const q = firestore().collection('messages').orderBy("timeStamp", "asc");
